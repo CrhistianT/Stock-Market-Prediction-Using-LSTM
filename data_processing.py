@@ -18,7 +18,8 @@ def show_data(data):
 
 
 
-#data.drop(['timestamp'],1,inplace=True)
+
+data.drop(['timestamp'],1,inplace=True)
 #Nonmalizando la data
 scaler = preprocessing.MinMaxScaler()
 data['open'] = scaler.fit_transform(data.open.values.reshape(-1,1))
@@ -27,6 +28,9 @@ data['low'] = scaler.fit_transform(data.low.values.reshape(-1,1))
 data['close'] = scaler.fit_transform(data.close.values.reshape(-1,1))
 data['volume'] = data['volume'].astype(float)
 data['volume'] = scaler.fit_transform(data.volume.values.reshape(-1,1))
+data_volume_temp = data['volume']
+data['volume'] = data['close']
+data['close'] = data_volume_temp
 
 
 
@@ -52,5 +56,6 @@ def load_data(bolsa, tamanio_sequencia):
 
 	return [data_X,data_y]
 
+print(len(load_data(data,30)[0][0]))
 
 
