@@ -32,7 +32,10 @@ def normalize(data):
 
 
 #Tratamiento de la data
-def procesamiento_data(bolsa, numero_dias):
+def procesamiento_data(input_file, numero_dias):
+    bolsa = pd.read_csv(input_file)
+    #data.drop(['timestamp'],1,inplace=True)
+    bolsa = normalize(bolsa)
     n_caracteristicas = len(bolsa.columns)
     data = bolsa.as_matrix()
     #print(data)
@@ -46,8 +49,5 @@ def procesamiento_data(bolsa, numero_dias):
     #X = np.reshape(X,(X.shape[0],X.shape[1],n_caracteristicas))
     return [X,y]
 	
-'''data.drop(['timestamp'],1,inplace=True) #no se si deberiamos dropear la fecha men
-normalize(data)
-print(procesamiento_data(data,30)[1][1])'''
 
 
