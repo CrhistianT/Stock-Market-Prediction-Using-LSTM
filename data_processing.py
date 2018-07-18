@@ -3,8 +3,8 @@ import pandas as pd
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
 
-input_file = "daily_MSFT.csv"
-data = pd.read_csv(input_file)
+#input_file = "daily_MSFT.csv"
+#data = pd.read_csv(input_file)
 #print(data.shape)
 #print(data.head())
 
@@ -44,10 +44,16 @@ def procesamiento_data(input_file, numero_dias):
     for indice in range(n - numero_dias):
         entrenamiento.append(data[indice:indice+numero_dias+1])
     entrenamiento = np.array(entrenamiento)
-    X = entrenamiento[:,:-1]
-    y = entrenamiento[:,-1][:,-1]
-    #X = np.reshape(X,(X.shape[0],X.shape[1],n_caracteristicas))
-    return [X,y]
+    porcentaje_entrenamiento = round(0.8*len(entrenamiento))
+    data_entrenamiento = entrenamiento[:int(porcentaje_entrenamiento),:]
+    X_entrenamiento = data_entrenamiento[:,:-1]
+    y_entrenamiento = entrenamiento[:,-1][:,-1]
+
+    X_prueba = entrenamiento[int(porcentaje_entrenamiento):,:-1]
+    y_prueba = entrenamiento[int(porcentaje_entrenamiento):,-1][:,-1]
+    #X_entrenamiento = np.reshape(X_entrenamiento,(X_entrenamiento.shape[0],X_entrenamiento.shape[1],n_caracteristicas))
+    #X_prueba = np.reshape(X_prueba,(X_prueba.shape[0],X_prueba.shape[1],n_caracteristicas))
+    return [X_entrenamiento,y_entrenamiento,X_prueba,y_prueba]
 	
 
 
