@@ -34,7 +34,7 @@ def normalize(data):
 #Tratamiento de la data
 def procesamiento_data(input_file, numero_dias):
     bolsa = pd.read_csv(input_file)
-    #data.drop(['timestamp'],1,inplace=True)
+    bolsa.drop(['timestamp'],1,inplace=True)
     bolsa = normalize(bolsa)
     n_caracteristicas = len(bolsa.columns)
     data = bolsa.as_matrix()
@@ -47,13 +47,16 @@ def procesamiento_data(input_file, numero_dias):
     porcentaje_entrenamiento = round(0.8*len(entrenamiento))
     data_entrenamiento = entrenamiento[:int(porcentaje_entrenamiento),:]
     X_entrenamiento = data_entrenamiento[:,:-1]
-    y_entrenamiento = entrenamiento[:,-1][:,-1]
+    y_entrenamiento = data_entrenamiento[:,-1][:,-1]
 
     X_prueba = entrenamiento[int(porcentaje_entrenamiento):,:-1]
     y_prueba = entrenamiento[int(porcentaje_entrenamiento):,-1][:,-1]
+    print(len(X_entrenamiento))
+    print(len(y_entrenamiento))
     #X_entrenamiento = np.reshape(X_entrenamiento,(X_entrenamiento.shape[0],X_entrenamiento.shape[1],n_caracteristicas))
     #X_prueba = np.reshape(X_prueba,(X_prueba.shape[0],X_prueba.shape[1],n_caracteristicas))
     return [X_entrenamiento,y_entrenamiento,X_prueba,y_prueba]
 	
-
+input_file = "daily_MSFT.csv"
+procesamiento_data(input_file,30)
 
