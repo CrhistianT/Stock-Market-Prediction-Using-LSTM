@@ -51,12 +51,6 @@ def procesamiento_data(input_file, numero_dias):
 
     X_prueba = entrenamiento[int(porcentaje_entrenamiento):,:-1]
     y_prueba = entrenamiento[int(porcentaje_entrenamiento):,-1][:,-1]
-    print(len(X_entrenamiento))
-    print(len(y_entrenamiento))
-    #X_entrenamiento = np.reshape(X_entrenamiento,(X_entrenamiento.shape[0],X_entrenamiento.shape[1],n_caracteristicas))
+    #   X_entrenamiento = np.reshape(X_entrenamiento,(X_entrenamiento.shape[0],X_entrenamiento.shape[1],n_caracteristicas))
     #X_prueba = np.reshape(X_prueba,(X_prueba.shape[0],X_prueba.shape[1],n_caracteristicas))
     return [X_entrenamiento,y_entrenamiento,X_prueba,y_prueba]
-	
-input_file = "daily_MSFT.csv"
-procesamiento_data(input_file,30)
-
