@@ -11,10 +11,10 @@ def show_graphic(data_frame):
         plt.xlabel('fecha',fontsize=18)
         plt.ylabel('precio medio',fontsize=18)
         plt.show()
-input_file = "daily_MSFT.csv"
+'''input_file = "daily_MSFT.csv"
 data = pd.read_csv(input_file)
 data = data.sort_values('timestamp')
-show_graphic(data)
+show_graphic(data)'''
 
 def normalize(data):
         scaler = preprocessing.MinMaxScaler()
@@ -28,7 +28,7 @@ def normalize(data):
         data.drop(['close'],1,inplace=True)
         return data
 
-def denomalize(valor_normalizado):
+def denormalize(valor_normalizado, input_file):
         data = pd.read_csv(input_file)
         data = data.sort_values('timestamp')
         data.drop(['timestamp'],1,inplace=True)
@@ -56,7 +56,7 @@ def procesamiento_data(input_file, numero_dias):
     for indice in range(n - numero_dias):
         entrenamiento.append(data[indice:indice+numero_dias+1])
     entrenamiento = np.array(entrenamiento)
-    porcentaje_entrenamiento = round(0.8*len(entrenamiento))
+    porcentaje_entrenamiento = round(0.9*len(entrenamiento))
     data_entrenamiento = entrenamiento[:int(porcentaje_entrenamiento),:]
     X_entrenamiento = data_entrenamiento[:,:-1]
     y_entrenamiento = data_entrenamiento[:,-1][:,-1]

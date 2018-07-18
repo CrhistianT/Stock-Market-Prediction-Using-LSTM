@@ -13,19 +13,19 @@ class StockPrediction():
 		self.input_dim = input_dim
 		self.seq_size = seq_size
 
-		self.Opt = Adam(decay=0.2)
+		self.Opt = Adam(decay=0.2)#, lr=0.1)
 
 		self.model = Sequential()
 
 		self.model.add(CuDNNLSTM(256, input_shape=(seq_size, input_dim), return_sequences=True))
 		self.model.add(Dropout(d))
-		self.model.add(CuDNNLSTM(256, input_shape=(seq_size, input_dim), return_sequences=True))
-		self.model.add(Dropout(d))
+		#self.model.add(CuDNNLSTM(256, input_shape=(seq_size, input_dim), return_sequences=True))
+		#self.model.add(Dropout(d))
 		self.model.add(CuDNNLSTM(256, input_shape=(seq_size, input_dim), return_sequences=False))
 		self.model.add(Dropout(d))
 		self.model.add(Dense(32, kernel_initializer="uniform", activation='relu'))
 		self.model.add(Dense(1, kernel_initializer="uniform", activation='linear'))
-		self.model.add(Activation('softmax'))
+		#self.model.add(Activation('softmax'))
 
 		self.model.compile(loss='mse', optimizer=self.Opt)
 
@@ -61,8 +61,16 @@ class StockPrediction():
 
 S = StockPrediction(5, 30)
 S.LoadData("daily_MSFT.csv")
-S.Train(100)
+#S.Train(50)
+S.LoadModel()
 P = S.Predict(S.X_test)
+P = denormalize(P, "daily_MSFT.csv")
+Y = denormalize(S.Y_test, "daily_MSFT.csv")
 print(P)
-S.Evaluate(S.X, S.Y, S.X_test, S.Y_test)
-S.SaveModel()
+print(Y)
+plt.plot(P, color='red', label='Prediccion')
+plt.plot(Y, color='green', label='Valor Real')
+plt.legend()
+plt.show()
+#S.Evaluate(S.X, S.Y, S.X_test, S.Y_test)
+#S.SaveModel()1
