@@ -3,10 +3,6 @@ import pandas as pd
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
 
-#input_file = "daily_MSFT.csv"
-#data = pd.read_csv(input_file)
-#print(data.shape)
-#print(data.head())
 
 def show_graphic(data_frame):
         plt.figure(figsize=(14,7))
@@ -15,8 +11,10 @@ def show_graphic(data_frame):
         plt.xlabel('fecha',fontsize=18)
         plt.ylabel('precio medio',fontsize=18)
         plt.show()
-#data = data.sort_values('timestamp')
-#show_graphic(data)
+input_file = "daily_MSFT.csv"
+data = pd.read_csv(input_file)
+data = data.sort_values('timestamp')
+show_graphic(data)
 
 def normalize(data):
         scaler = preprocessing.MinMaxScaler()
@@ -30,6 +28,19 @@ def normalize(data):
         data.drop(['close'],1,inplace=True)
         return data
 
+def denomalize(valor_normalizado):
+        data = pd.read_csv(input_file)
+        data = data.sort_values('timestamp')
+        data.drop(['timestamp'],1,inplace=True)
+        data['closef'] = data.close
+        data.drop(['close'],1,inplace=True)
+        data = data['closef'].values.reshape(-1,1)
+        valor_normalizado = valor_normalizado.reshape(-1,1)
+
+        reverse_scaler = preprocessing.MinMaxScaler()
+        t = reverse_scaler.fit_transform(data)
+        valor_escalado = reverse_scaler.inverse_transform(valor_normalizado)
+        return valor_escalado
 
 #Tratamiento de la data
 def procesamiento_data(input_file, numero_dias):
@@ -49,11 +60,11 @@ def procesamiento_data(input_file, numero_dias):
     data_entrenamiento = entrenamiento[:int(porcentaje_entrenamiento),:]
     X_entrenamiento = data_entrenamiento[:,:-1]
     y_entrenamiento = data_entrenamiento[:,-1][:,-1]
-    #print(len(X_entrenamiento))
+    #print(X_entrenamiento[0])
     X_prueba = entrenamiento[int(porcentaje_entrenamiento):,:-1]
     #print(len(X_prueba))
     y_prueba = entrenamiento[int(porcentaje_entrenamiento):,-1][:,-1]
     X_entrenamiento = np.reshape(X_entrenamiento,(X_entrenamiento.shape[0],X_entrenamiento.shape[1],n_caracteristicas))
     X_prueba = np.reshape(X_prueba,(X_prueba.shape[0],X_prueba.shape[1],n_caracteristicas))
     return [X_entrenamiento,y_entrenamiento,X_prueba,y_prueba]
-procesamiento_data("daily_MSFT.csv",30)
+#procesamiento_data("daily_MSFT.csv",30)
